@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">ForeignExchangeApp</string>
+    <string name="rates_exchange">%1$s %2$s</string>
+    <string name="USD">USD: </string>
+    <string name="CAD">CAD: </string>
+    <string name="GBP">GBP: </string>
+    <string name="INR">INR: </string>
+    <string name="basecurrency">Base Currency: EURO</string>
+    <string name="latest_rates">Exchange Rates (Latest)</string>
+    <string name="rates_by_date">Exchange Rates (By Date)</string>
+    <string name="enter_date">Enter Date (ex: 2018–06–17)</string>
+</resources>
