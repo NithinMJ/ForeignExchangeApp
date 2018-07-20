@@ -11,7 +11,7 @@ class ExchangeRateFromatter : ExchangeRateFromatterInterface {
 
         for ((key, value) in listMapContent) {
             val valueWithReducedDecimal = reduceDecimalPoints(value)
-            listMapContentRates.add("$key: $valueWithReducedDecimal")
+            listMapContentRates.add("$key -> $valueWithReducedDecimal")
         }
 
         return listMapContentRates
