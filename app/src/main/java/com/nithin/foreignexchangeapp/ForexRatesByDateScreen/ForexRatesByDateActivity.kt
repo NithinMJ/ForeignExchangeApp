@@ -17,9 +17,12 @@ class ForexRatesByDateActivity : AppCompatActivity(), ForexRatesByDateContract.V
         setContentView(R.layout.activity_forex_rates_by_date)
 
         val dateValueText = intent.getStringExtra("userEnteredDate").toString()
+        val baseCurrencyText = intent.getStringExtra("userEnteredBaseCurrency").toString()
+
+        datebaseCurrencyHeaderText.text = getString(R.string.forex_rates_by_date_header,baseCurrencyText,dateValueText)
 
         forexRatesByDateContract.attachView(this)
-        forexRatesByDateContract.loadForexRatesByDate(dateValueText)
+        forexRatesByDateContract.loadForexRatesByDate(dateValueText, baseCurrencyText)
 
 
     }
