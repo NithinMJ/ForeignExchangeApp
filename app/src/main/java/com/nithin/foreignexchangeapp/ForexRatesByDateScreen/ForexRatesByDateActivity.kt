@@ -4,13 +4,18 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.nithin.foreignexchangeapp.Adapter.ForexRatesByDateAdapter
 import com.nithin.foreignexchangeapp.R
+import com.nithin.foreignexchangeapp.di.HelperModule
+import com.nithin.foreignexchangeapp.di.NetworkModule
 import io.reactivex.disposables.Disposables
 import kotlinx.android.synthetic.main.activity_forex_rates_by_date.*
 
 class ForexRatesByDateActivity : AppCompatActivity(), ForexRatesByDateContract.View {
 
 
-    private var forexRatesByDateContract: ForexRatesByDateContract.Presenter = ForexRatesByDatePresenter()
+    private var forexRatesByDateContract: ForexRatesByDateContract.Presenter = ForexRatesByDatePresenter(
+            NetworkModule.getForexRetrofitService(),
+            HelperModule.getExchangeRateFormatter()
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

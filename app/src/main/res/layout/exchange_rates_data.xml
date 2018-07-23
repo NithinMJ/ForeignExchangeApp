@@ -5,6 +5,7 @@
     android:orientation="horizontal">
 
     <TextView
+        android:textColor="@color/colorPrimary"
         android:id="@+id/exchangeRateDataText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

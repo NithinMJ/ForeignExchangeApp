@@ -11,7 +11,7 @@ interface ForexRatesByDateContract {
 
         fun detachView()
 
-        fun loadForexRatesByDate(userEnteredDate: String)
+        fun loadForexRatesByDate(userEnteredDate: String,baseCurrency: String)
 
     }
 }

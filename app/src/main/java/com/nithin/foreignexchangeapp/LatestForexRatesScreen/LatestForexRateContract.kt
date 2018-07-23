@@ -1,5 +1,7 @@
 package com.nithin.foreignexchangeapp.LatestForexRatesScreen
 
+import java.util.*
+
 interface LatestForexRateContract {
 
     interface View {
@@ -12,7 +14,7 @@ interface LatestForexRateContract {
 
         fun detachView()
 
-        fun loadLatestForexRates()
+        fun loadLatestForexRates(baseCurrency: String)
 
     }
 }

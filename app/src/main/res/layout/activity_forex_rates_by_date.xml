@@ -3,15 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/homeBackground"
     android:gravity="center"
     android:orientation="vertical"
     tools:context=".LatestForexRatesScreen.LatestForexRateActivity">
 
     <TextView
+        android:background="@color/button"
+        android:textColor="@color/homeBackground"
+        android:id="@+id/datebaseCurrencyHeaderText"
+        android:text="@string/forex_rates_by_date_header"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="32dp"
         android:layout_margin="10dp"
-        android:text="@string/basecurrency"
         android:textAlignment="center"
         android:textSize="18sp"
         android:textStyle="bold" />

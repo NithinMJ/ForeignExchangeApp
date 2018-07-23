@@ -1,22 +1,19 @@
 package com.nithin.foreignexchangeapp.ForexRatesByDateScreen
 
-import com.nithin.foreignexchangeapp.ExchangeRatesFormatter.ExchangeRateFromatter
-import com.nithin.foreignexchangeapp.ExchangeRatesFormatter.ExchangeRateFromatterInterface
-import com.nithin.foreignexchangeapp.HomeScreen.baseURL
+import android.support.annotation.VisibleForTesting
+import com.nithin.foreignexchangeapp.ExchangeRatesFormatter.ExchangeRateFormatterInterface
 import com.nithin.foreignexchangeapp.Network.ForexDataClass
-import com.nithin.foreignexchangeapp.Network.ForexDataLatest
 import com.nithin.foreignexchangeapp.Network.ForexRetrofitServiceInterface
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import retrofit2.converter.gson.GsonConverterFactory
 
-class ForexRatesByDatePresenter : ForexRatesByDateContract.Presenter {
+class ForexRatesByDatePresenter(
+        private val forexExchangeService: ForexRetrofitServiceInterface,
+        private val exchangeRateFormatterInterface: ExchangeRateFormatterInterface
+) : ForexRatesByDateContract.Presenter {
 
     private var view: ForexRatesByDateContract.View? = null
-    private var listRatesByDate: Map<String, Double> = mapOf()
-    private var exchangeRateFromatterInterface: ExchangeRateFromatterInterface = ExchangeRateFromatter()
+
 
     override fun attachView(view: ForexRatesByDateContract.View) {
         this.view = view
@@ -26,37 +23,19 @@ class ForexRatesByDatePresenter : ForexRatesByDateContract.Presenter {
         view = null
     }
 
-    override fun loadForexRatesByDate(userEnteredDate: String) {
-        val requestForexRatesDataByDate = Retrofit.Builder()
-                .baseUrl(baseURL)
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build().create(ForexRetrofitServiceInterface::class.java)
-
-        requestForexRatesDataByDate.getRatesByDate(userEnteredDate)
-                .map { forexDataClass: ForexDataClass ->
-                    ForexDataLatest(
-                            base = forexDataClass.base,
-                            date = forexDataClass.date,
-                            rates = mapOf(
-                                    "USD" to forexDataClass.rates.USD,
-                                    "CAD" to forexDataClass.rates.CAD,
-                                    "GBP" to forexDataClass.rates.GBP,
-                                    "INR" to forexDataClass.rates.INR,
-                                    "JPY" to forexDataClass.rates.JPY
-                            )
-                    )
-                }
+    override fun loadForexRatesByDate(userEnteredDate: String, baseCurrency: String) {
+        forexExchangeService.getRatesByDate(userEnteredDate, baseCurrency)
+                .map { forexDataClass: ForexDataClass -> exchangeRateFormatterInterface.createCurrencyMap(baseCurrency, forexDataClass) }
+                .map { map -> exchangeRateFormatterInterface.getListFromMap(map)  }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({ forexDataLatest: ForexDataLatest ->
-                    listRatesByDate += forexDataLatest.rates
-                    view?.displayForexRatesByDate(exchangeRateFromatterInterface.getListFromMap(listRatesByDate))
-
+                .subscribe({ listOfCurrencies ->
+                    view?.displayForexRatesByDate(listOfCurrencies)
                 }, { error ->
                     error.printStackTrace()
                 })
     }
+
 
 }
 
